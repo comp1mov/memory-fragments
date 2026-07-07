@@ -1,0 +1,340 @@
+{
+  "schemaVersion": "memory-fragment-portal-manifest@0.1",
+  "updatedAt": "2026-07-05",
+  "source": {
+    "githubRepository": "https://github.com/comp1mov/Point-of-View",
+    "githubPagesBaseUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments",
+    "notes": "Seed catalog for the future Memory Fragment Portal. All current entries point to public GitHub Pages HTML files."
+  },
+  "defaults": {
+    "author": "Grisha Tsvetkov",
+    "creditUrl": "https://grisha-tsvetkov.com/",
+    "instagram": "https://www.instagram.com/post.pointless/",
+    "visibility": "public",
+    "shareMode": "public-url",
+    "openTarget": "new-tab",
+    "downloadEnabled": false
+  },
+  "fragments": [
+    {
+      "id": "mf-algorhythms-ar",
+      "slug": "algorhythms-ar",
+      "title": "AlgoRhythms",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "The Carpet Shop, London, UK",
+      "dateLabel": "2025-03-05 19:21",
+      "category": "performance",
+      "artistNote": "Audio-reactive spatial fragment from AlgoRhythms at The Carpet Shop.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["performance", "london", "audio", "strudel"],
+      "player": {
+        "family": "audio-strudel",
+        "version": "legacy-ar",
+        "basedOn": "memory-fragment-minimal-v056"
+      },
+      "features": {
+        "audioReactive": true,
+        "strudel": true,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "AR.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/AR.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/AR.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/AR.html",
+        "localReference": "ExibitionViwer/Algorhytmes/AR.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 4200000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/2rpx5qg9t08zb8zf3xagz/AlgoRhythms_theCarpetShop-19.21-05-03-2025-LDN_4.2_mln.ply?rlkey=bk2br9n7n67jgkz7modvrwo4f&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-rencontres-audiovisuelles-lille",
+      "slug": "rencontres-audiovisuelles-lille",
+      "title": "Rencontres Audiovisuelles",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "Lille, France",
+      "dateLabel": "2025-12-19 21:23",
+      "category": "residency",
+      "artistNote": "Spatial fragment from the Rencontres Audiovisuelles residency in Lille.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["lille", "residency", "audio", "strudel"],
+      "player": {
+        "family": "audio-strudel",
+        "version": "legacy-reau",
+        "basedOn": "memory-fragment-minimal-v056"
+      },
+      "features": {
+        "audioReactive": true,
+        "strudel": true,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "ReAu.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/ReAu.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/ReAu.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/ReAu.html",
+        "localReference": "ExibitionViwer/Lille/ReAu.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 3200000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/4d59klxpsm3qpfy23001h/residency_lille_19_12_2025_3_2mln.ply?rlkey=ng6j74g88o24uwmibb1yuuipx&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-algorhythms-4mln",
+      "slug": "algorhythms-4mln",
+      "title": "AlgoRhythms 4.2M",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "The Carpet Shop, London, UK",
+      "dateLabel": "2025-03-05 19:21",
+      "category": "performance",
+      "artistNote": "Large point-count AlgoRhythms fragment, kept as a distinct player branch.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["performance", "london", "large-scan"],
+      "player": {
+        "family": "minimal",
+        "version": "legacy-4mln-v5",
+        "basedOn": "memory-fragment-minimal"
+      },
+      "features": {
+        "audioReactive": false,
+        "strudel": false,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "4mln_AlgoRhythms_TheCarpetShop_192105032025.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/4mln_AlgoRhythms_TheCarpetShop_192105032025.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/4mln_AlgoRhythms_TheCarpetShop_192105032025.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/4mln_AlgoRhythms_TheCarpetShop_192105032025.html",
+        "localReference": "ExibitionViwer/scans_for_viewPoint/4mln_AlgoRhythms_TheCarpetShop_192105032025_v5_title.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 4200000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/2rpx5qg9t08zb8zf3xagz/AlgoRhythms_theCarpetShop-19.21-05-03-2025-LDN_4.2_mln.ply?rlkey=bk2br9n7n67jgkz7modvrwo4f&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-algorhythms-17mln",
+      "slug": "algorhythms-17mln",
+      "title": "AlgoRhythms 1.7M",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "The Carpet Shop, London, UK",
+      "dateLabel": "2025-03-05 19:21",
+      "category": "performance",
+      "artistNote": "Earlier AlgoRhythms fragment using a lighter scan source.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["performance", "london"],
+      "player": {
+        "family": "minimal",
+        "version": "legacy-1-7mln",
+        "basedOn": "memory-fragment-minimal"
+      },
+      "features": {
+        "audioReactive": false,
+        "strudel": false,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "AlgoRhythms_TheCarpetShop_192105032025.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/AlgoRhythms_TheCarpetShop_192105032025.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/AlgoRhythms_TheCarpetShop_192105032025.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/AlgoRhythms_TheCarpetShop_192105032025.html",
+        "localReference": "ExibitionViwer/scans_for_viewPoint/AlgoRhythms_TheCarpetShop_192105032025.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 1700000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/2pc1uqre5s4tuwzappi11/AlgoRhythms_theCarpetShop-19.21-05-03-2025-LDN_1.7_mln.ply?rlkey=8ebw5k01v097ncm361v74qxdb&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-dasha-kiryat-hamelacha",
+      "slug": "dasha-kiryat-hamelacha",
+      "title": "Dasha at Kiryat Hamelacha",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "Tel Aviv, Israel",
+      "dateLabel": "2025-01-16 21:34",
+      "category": "portrait",
+      "artistNote": "A personal spatial portrait from Kiryat Hamelacha.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["tel-aviv", "portrait", "stairs"],
+      "player": {
+        "family": "minimal",
+        "version": "legacy-early",
+        "basedOn": "memory-fragment-minimal"
+      },
+      "features": {
+        "audioReactive": false,
+        "strudel": false,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "Dasha_213416012025.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/Dasha_213416012025.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/Dasha_213416012025.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/Dasha_213416012025.html",
+        "localReference": "ExibitionViwer/scans_for_viewPoint/Dasha_213416012025.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 4000000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/f29pm5wztu4a1bugkgk7t/Dasha-Kirata-KM-21.34-Stairs-02_2025-_4mln.ply?rlkey=p5l226ugnh1zsf9ctfgcmwlt9&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-gony-home",
+      "slug": "gony-home",
+      "title": "Gony at Home",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "Tel Aviv, Israel",
+      "dateLabel": "2026-01-21 19:05",
+      "category": "home",
+      "artistNote": "A home-space Memory Fragment from Tel Aviv.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["tel-aviv", "home"],
+      "player": {
+        "family": "minimal",
+        "version": "legacy-v32",
+        "basedOn": "memory-fragment-minimal"
+      },
+      "features": {
+        "audioReactive": false,
+        "strudel": false,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "Gony_190501212026_v32.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/Gony_190501212026_v32.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/Gony_190501212026_v32.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/Gony_190501212026_v32.html",
+        "localReference": "ExibitionViwer/scans_for_viewPoint/Gony_190501212026_v32.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 1600000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/mh9r9orqa2hip7r9sqdit/Scan-at-19.05-Gony-01212026-1.6mln.ply?rlkey=9cfcmf9j2wa3b6h39a9xdhb3s&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-la-vieille-bourse-lille",
+      "slug": "la-vieille-bourse-lille",
+      "title": "La Vieille Bourse",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "Lille, France",
+      "dateLabel": "2025-12-21 16:47",
+      "category": "architecture",
+      "artistNote": "Architectural fragment from La Vieille Bourse in Lille.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["lille", "architecture", "large-scan"],
+      "player": {
+        "family": "minimal",
+        "version": "legacy-lille-bourse",
+        "basedOn": "memory-fragment-minimal"
+      },
+      "features": {
+        "audioReactive": false,
+        "strudel": false,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "La Vieille Bourse Lille_36mln_1647 21 12 2025.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/La%20Vieille%20Bourse%20Lille_36mln_1647%2021%2012%202025.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/La%20Vieille%20Bourse%20Lille_36mln_1647%2021%2012%202025.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/La%20Vieille%20Bourse%20Lille_36mln_1647%2021%2012%202025.html",
+        "localReference": "ExibitionViwer/scans_for_viewPoint/La Vieille Bourse Lille_36mln_1647 21 12 2025.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 1900000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/5vgmzunlv7fvqqi1crfdv/Scan-at-16.47-La-Vieille-Bourse-Lille-France-21-12-2025-1i9mln.ply?rlkey=rd9k1nu5ahvsrx43jxqw4n8me&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-greycakes-marseille",
+      "slug": "greycakes-marseille",
+      "title": "Sasha Katya Henry Grisha and Chill",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "Marseille, France",
+      "dateLabel": "2025-04-23 13:48",
+      "category": "collective",
+      "artistNote": "Collective domestic fragment from Marseille.",
+      "visibility": "public",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["marseille", "home", "friends"],
+      "player": {
+        "family": "minimal",
+        "version": "legacy-v28",
+        "basedOn": "memory-fragment-minimal"
+      },
+      "features": {
+        "audioReactive": false,
+        "strudel": false,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "SKGGaC_132423042025v28.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/SKGGaC_132423042025v28.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/SKGGaC_132423042025v28.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/SKGGaC_132423042025v28.html",
+        "localReference": "ExibitionViwer/scans_for_viewPoint/SKGGaC_132423042025v28.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": null,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/gao6wbu0t00di7on0g8tx/scan-at-13.48-Marselle-GreyCakes-Home-23-04-2025.ply?rlkey=1xsk5wtclg5uhadmbl4bnkbyt&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    }
+  ]
+}
