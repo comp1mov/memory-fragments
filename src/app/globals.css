@@ -1,15 +1,16 @@
 :root {
   color-scheme: dark;
   --bg: #0b0c0d;
-  --panel: #141618;
-  --panel-2: #1b1e21;
-  --line: rgba(255, 255, 255, 0.12);
+  --panel: #111315;
+  --panel-2: #171a1d;
+  --line: rgba(255, 255, 255, 0.105);
   --text: #f4f1ea;
   --muted: rgba(244, 241, 234, 0.62);
   --soft: rgba(244, 241, 234, 0.08);
   --accent: #d8ff68;
   --warm: #f0ae63;
   --cold: #72d7d0;
+  --ink: #050606;
 }
 
 * {
@@ -20,9 +21,11 @@ html,
 body {
   min-height: 100%;
   margin: 0;
-  background: var(--bg);
+  background:
+    linear-gradient(180deg, rgba(216, 255, 104, 0.028), rgba(11, 12, 13, 0) 260px),
+    var(--bg);
   color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
   letter-spacing: 0;
 }
 
@@ -41,7 +44,7 @@ a {
 .not-found-page {
   width: min(1440px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 24px 0 48px;
+  padding: 28px 0 56px;
 }
 
 .portal-header,
@@ -54,17 +57,18 @@ a {
 }
 
 .portal-header {
-  min-height: 120px;
+  min-height: 148px;
   border-bottom: 1px solid var(--line);
-  padding-bottom: 22px;
+  padding-bottom: 24px;
 }
 
 .kicker,
 .section-label {
   margin: 0 0 8px;
   color: var(--accent);
-  font-size: 13px;
-  line-height: 1.2;
+  font-size: 12px;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -76,15 +80,15 @@ p {
 
 h1 {
   max-width: 900px;
-  font-size: 56px;
-  line-height: 1.02;
-  font-weight: 500;
+  font-size: clamp(42px, 6vw, 92px);
+  line-height: 0.94;
+  font-weight: 420;
 }
 
 h2 {
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1.15;
-  font-weight: 500;
+  font-weight: 440;
 }
 
 .muted {
@@ -113,9 +117,10 @@ h2 {
   border-radius: 6px;
   background: var(--soft);
   color: var(--text);
-  font-size: 13px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
   line-height: 1;
-  padding: 10px 12px;
+  padding: 10px 12px 11px;
 }
 
 .detail-actions button {
@@ -140,8 +145,8 @@ h2 {
 }
 
 .summary-strip div {
-  min-height: 92px;
-  padding: 18px 18px 18px 0;
+  min-height: 104px;
+  padding: 20px 20px 20px 0;
   border-right: 1px solid var(--line);
 }
 
@@ -151,7 +156,8 @@ h2 {
 
 .summary-strip span {
   display: block;
-  font-size: 28px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 31px;
   line-height: 1;
   color: var(--warm);
 }
@@ -167,13 +173,13 @@ h2 {
 }
 
 .toolbar {
-  padding: 22px 0;
+  padding: 26px 0;
 }
 
 .fragment-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .fragment-card {
@@ -182,6 +188,13 @@ h2 {
   border-radius: 8px;
   background: var(--panel);
   overflow: hidden;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.fragment-card:hover {
+  border-color: rgba(216, 255, 104, 0.45);
+  background: var(--panel-2);
+  transform: translateY(-2px);
 }
 
 .card-link {
@@ -192,16 +205,37 @@ h2 {
 
 .card-preview {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1.2 / 1;
   overflow: hidden;
-  background: #050606;
+  background: var(--ink);
   border-bottom: 1px solid var(--line);
+}
+
+.card-preview::before,
+.preview-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(244, 241, 234, 0.075);
+}
+
+.card-preview::after,
+.preview-placeholder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(244, 241, 234, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(244, 241, 234, 0.026) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.42;
 }
 
 .point-field {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  z-index: 1;
 }
 
 .point-field span {
@@ -257,8 +291,8 @@ h2 {
 
 .card-body {
   display: grid;
-  gap: 10px;
-  padding: 14px;
+  gap: 12px;
+  padding: 16px;
 }
 
 .card-meta {
@@ -266,13 +300,15 @@ h2 {
   justify-content: space-between;
   gap: 12px;
   color: var(--muted);
-  font-size: 12px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 .badge-row span {
-  padding: 7px 8px;
+  padding: 7px 8px 8px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .detail-nav {
@@ -299,7 +335,7 @@ h2 {
   justify-content: space-between;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--panel);
+  background: linear-gradient(180deg, rgba(244, 241, 234, 0.035), rgba(244, 241, 234, 0.008)), var(--panel);
   padding: 18px;
 }
 
@@ -338,13 +374,6 @@ h2 {
 .preview-placeholder {
   position: relative;
   background: #000;
-}
-
-.preview-placeholder::before {
-  content: "";
-  position: absolute;
-  inset: 18%;
-  border: 1px solid rgba(244, 241, 234, 0.08);
 }
 
 .detail-grid,
@@ -407,7 +436,7 @@ h2 {
   }
 
   h1 {
-    font-size: 40px;
+    font-size: 42px;
   }
 
   .summary-strip,
@@ -441,7 +470,7 @@ h2 {
 
 @media (max-width: 520px) {
   h1 {
-    font-size: 32px;
+    font-size: 34px;
   }
 
   .summary-strip,

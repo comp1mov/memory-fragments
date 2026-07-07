@@ -73,6 +73,10 @@ Public sitemap output uses only the same `public` grid records. `unlisted` fragm
 6. Add optional per-fragment downloads.
 7. Replace static manifest with database-backed records when creation/editing becomes real.
 
+## Design Direction
+
+The gallery should feel like a quiet spatial archive rather than a marketing landing page. Prefer a dense index, restrained type, thin rules, lightweight cover media, and metadata that feels like an inventory label. The actual scan/player stays one click away so the archive remains fast.
+
 ## Local Commands
 
 ```bash

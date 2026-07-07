@@ -18,8 +18,8 @@ export default function HomePage() {
           <h1>Spatial Memory Fragments</h1>
         </div>
         <div className="header-actions" aria-label="Portal links">
-          <a href={fragmentManifest.source.githubRepository}>GitHub</a>
-          <a href={fragmentManifest.source.githubPagesBaseUrl}>Fragments</a>
+          <a href={fragmentManifest.source.githubRepository} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={fragmentManifest.source.githubPagesBaseUrl} target="_blank" rel="noopener noreferrer">Fragments</a>
         </div>
       </header>
 
@@ -55,9 +55,9 @@ export default function HomePage() {
       </section>
 
       <section className="fragment-grid" aria-label="Spatial Memory Fragment gallery">
-        {fragments.map((fragment) => (
+        {fragments.map((fragment, index) => (
           <article className="fragment-card" key={fragment.id}>
-            <Link href={`/fragments/${fragment.slug}`} className="card-link">
+            <Link href={`/fragments/${fragment.slug}`} className="card-link" aria-label={`Open ${fragment.title}`}>
               <div className="card-preview" aria-hidden="true">
                 <div className="point-field">
                   <span />
@@ -72,7 +72,7 @@ export default function HomePage() {
               </div>
               <div className="card-body">
                 <div className="card-meta">
-                  <span>{getYearLabel(fragment)}</span>
+                  <span>{String(index + 1).padStart(2, "0")} / {getYearLabel(fragment)}</span>
                   <span>{fragment.category}</span>
                 </div>
                 <h2>{fragment.title}</h2>
