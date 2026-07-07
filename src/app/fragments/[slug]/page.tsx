@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CopyLinkButton } from "@/components/copy-link-button";
-import { PointField } from "@/components/point-field";
+import { FragmentPreview } from "@/components/fragment-preview";
 import {
+  getAdjacentGridFragments,
   getFragmentBySlug,
   getPublishedFragments,
   getYearLabel
@@ -66,7 +67,7 @@ export default async function FragmentPage({ params }: FragmentPageProps) {
     notFound();
   }
 
-  const hasCover = fragment.cover.url.trim().length > 0;
+  const { next, previous } = getAdjacentGridFragments(fragment.slug);
 
   return (
     <main className="fragment-page">
@@ -96,13 +97,7 @@ export default async function FragmentPage({ params }: FragmentPageProps) {
         </div>
 
         <div className="selected-preview-panel" aria-label={`${fragment.title} cover`}>
-          {hasCover ? (
-            <img src={fragment.cover.url} alt={`${fragment.title} cover`} loading="lazy" />
-          ) : (
-            <div className="preview-placeholder">
-              <PointField seed={fragment.id} density="detail" />
-            </div>
-          )}
+          <FragmentPreview fragment={fragment} variant="detail" />
         </div>
       </section>
 
@@ -139,6 +134,25 @@ export default async function FragmentPage({ params }: FragmentPageProps) {
           <p>{fragment.player.basedOn}</p>
         </div>
       </section>
+
+      {(previous || next) ? (
+        <nav className="fragment-neighbors" aria-label="Adjacent public fragments">
+          {previous ? (
+            <Link href={`/fragments/${previous.slug}`}>
+              <span>Previous</span>
+              <strong>{previous.title}</strong>
+              <small>{previous.place}</small>
+            </Link>
+          ) : <span />}
+          {next ? (
+            <Link href={`/fragments/${next.slug}`}>
+              <span>Next</span>
+              <strong>{next.title}</strong>
+              <small>{next.place}</small>
+            </Link>
+          ) : <span />}
+        </nav>
+      ) : null}
     </main>
   );
 }

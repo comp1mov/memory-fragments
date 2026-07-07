@@ -22,6 +22,23 @@ export function getFragmentBySlug(slug: string): MemoryFragment | undefined {
   return getPublishedFragments().find((fragment) => fragment.slug === slug);
 }
 
+export function getAdjacentGridFragments(slug: string): {
+  next?: MemoryFragment;
+  previous?: MemoryFragment;
+} {
+  const fragments = getGridFragments();
+  const currentIndex = fragments.findIndex((fragment) => fragment.slug === slug);
+
+  if (currentIndex === -1) {
+    return {};
+  }
+
+  return {
+    previous: fragments[currentIndex - 1],
+    next: fragments[currentIndex + 1]
+  };
+}
+
 export function getUniquePlaces(): string[] {
   return [...new Set(getGridFragments().map((fragment) => fragment.place))].sort();
 }

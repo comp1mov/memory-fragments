@@ -343,6 +343,7 @@ h2 {
 }
 
 .selected-preview-panel img,
+.selected-preview-panel video,
 .preview-placeholder {
   display: block;
   width: 100%;
@@ -350,7 +351,10 @@ h2 {
   min-height: 520px;
 }
 
-.selected-preview-panel img {
+.cover-media {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -389,6 +393,48 @@ h2 {
 
 .technical-strip {
   grid-template-columns: 120px 1fr 2fr;
+}
+
+.fragment-neighbors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.fragment-neighbors > span {
+  min-height: 1px;
+}
+
+.fragment-neighbors a {
+  display: grid;
+  gap: 8px;
+  min-height: 124px;
+  align-content: space-between;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 14px;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.fragment-neighbors a:hover {
+  border-color: rgba(216, 255, 104, 0.45);
+  background: var(--panel-2);
+}
+
+.fragment-neighbors span,
+.fragment-neighbors small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.fragment-neighbors strong {
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 430;
+  line-height: 1.1;
 }
 
 .not-found-page {
@@ -438,6 +484,7 @@ h2 {
 
   .selected-preview-panel,
   .selected-preview-panel img,
+  .selected-preview-panel video,
   .preview-placeholder {
     min-height: 520px;
   }
@@ -463,7 +510,8 @@ h2 {
   .summary-strip,
   .fragment-grid,
   .detail-grid,
-  .technical-strip {
+  .technical-strip,
+  .fragment-neighbors {
     grid-template-columns: 1fr;
   }
 

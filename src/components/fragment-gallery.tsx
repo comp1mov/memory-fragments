@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { PointField } from "@/components/point-field";
+import { FragmentPreview } from "@/components/fragment-preview";
 import type { MemoryFragment } from "@/lib/fragments";
 
 type FragmentGalleryProps = {
@@ -85,7 +85,7 @@ export function FragmentGallery({ fragments }: FragmentGalleryProps) {
           <article className="fragment-card" key={fragment.id}>
             <Link href={`/fragments/${fragment.slug}`} className="card-link" aria-label={`Open ${fragment.title}`}>
               <div className="card-preview">
-                <PointField seed={fragment.id} />
+                <FragmentPreview fragment={fragment} />
               </div>
               <div className="card-body">
                 <div className="card-meta">
