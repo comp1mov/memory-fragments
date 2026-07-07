@@ -77,6 +77,8 @@ Public sitemap output uses only the same `public` grid records. `unlisted` fragm
 
 The gallery should feel like a quiet spatial archive rather than a marketing landing page. Prefer a dense index, restrained type, thin rules, lightweight cover media, and metadata that feels like an inventory label. The actual scan/player stays one click away so the archive remains fast.
 
+Until real screenshots or videos are attached, fragment previews use deterministic point fields generated from each fragment ID. This keeps the grid light while still giving each record a distinct visual fingerprint.
+
 ## Local Commands
 
 ```bash

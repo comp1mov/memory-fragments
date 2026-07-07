@@ -112,6 +112,7 @@ h2 {
 .detail-actions button,
 .not-found-page a,
 .filter-row span,
+.filter-row button,
 .badge-row span {
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -121,6 +122,18 @@ h2 {
   letter-spacing: 0.02em;
   line-height: 1;
   padding: 10px 12px 11px;
+}
+
+.filter-row button {
+  cursor: pointer;
+  font-family: inherit;
+  text-transform: lowercase;
+}
+
+.filter-row button[aria-pressed="true"] {
+  border-color: rgba(216, 255, 104, 0.58);
+  background: rgba(216, 255, 104, 0.14);
+  color: var(--accent);
 }
 
 .detail-actions button {
@@ -174,6 +187,16 @@ h2 {
 
 .toolbar {
   padding: 26px 0;
+}
+
+.archive-toolbar {
+  align-items: flex-start;
+}
+
+.filter-stack {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
 }
 
 .fragment-grid {
@@ -240,53 +263,13 @@ h2 {
 
 .point-field span {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: var(--text);
-  opacity: 0.78;
-}
-
-.point-field span:nth-child(1) {
-  left: 12%;
-  top: 26%;
-}
-
-.point-field span:nth-child(2) {
-  left: 24%;
-  top: 68%;
-  background: var(--warm);
-}
-
-.point-field span:nth-child(3) {
-  left: 38%;
-  top: 42%;
-}
-
-.point-field span:nth-child(4) {
-  left: 52%;
-  top: 76%;
-  background: var(--cold);
-}
-
-.point-field span:nth-child(5) {
-  left: 63%;
-  top: 30%;
-}
-
-.point-field span:nth-child(6) {
-  left: 72%;
-  top: 58%;
-  background: var(--accent);
-}
-
-.point-field span:nth-child(7) {
-  left: 84%;
-  top: 22%;
-}
-
-.point-field span:nth-child(8) {
-  left: 90%;
-  top: 70%;
+  left: var(--x);
+  top: var(--y);
+  width: var(--point-size);
+  height: var(--point-size);
+  background: var(--point-color);
+  opacity: var(--point-opacity);
+  box-shadow: 0 0 12px currentColor;
 }
 
 .card-body {
@@ -433,6 +416,10 @@ h2 {
   .toolbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .filter-stack {
+    justify-items: start;
   }
 
   h1 {

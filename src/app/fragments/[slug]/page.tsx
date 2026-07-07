@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CopyLinkButton } from "@/components/copy-link-button";
+import { PointField } from "@/components/point-field";
 import {
   getFragmentBySlug,
   getPublishedFragments,
@@ -98,17 +99,8 @@ export default async function FragmentPage({ params }: FragmentPageProps) {
           {hasCover ? (
             <img src={fragment.cover.url} alt={`${fragment.title} cover`} loading="lazy" />
           ) : (
-            <div className="preview-placeholder" aria-hidden="true">
-              <div className="point-field">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
+            <div className="preview-placeholder">
+              <PointField seed={fragment.id} density="detail" />
             </div>
           )}
         </div>
