@@ -95,6 +95,12 @@ h2 {
   color: var(--muted);
 }
 
+.archive-status {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .header-actions,
 .filter-row,
 .detail-actions,
@@ -125,15 +131,34 @@ h2 {
 }
 
 .filter-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
   font-family: inherit;
   text-transform: lowercase;
+}
+
+.filter-row button small {
+  color: var(--muted);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  line-height: 1;
 }
 
 .filter-row button[aria-pressed="true"] {
   border-color: rgba(216, 255, 104, 0.58);
   background: rgba(216, 255, 104, 0.14);
   color: var(--accent);
+}
+
+.filter-row button[aria-pressed="true"] small {
+  color: var(--accent);
+}
+
+.filter-row .filter-reset {
+  border-style: dashed;
+  color: var(--muted);
 }
 
 .detail-actions button {
@@ -203,6 +228,28 @@ h2 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
+}
+
+.empty-filter-state {
+  display: grid;
+  min-height: 240px;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.empty-filter-state button {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--soft);
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 10px 12px 11px;
 }
 
 .fragment-card {

@@ -77,6 +77,8 @@ Public sitemap output uses only the same `public` grid records. `unlisted` fragm
 
 The gallery should feel like a quiet spatial archive rather than a marketing landing page. Prefer a dense index, restrained type, thin rules, lightweight cover media, and metadata that feels like an inventory label. The actual scan/player stays one click away so the archive remains fast.
 
+Filters should behave like archive controls, not marketing tags: show counts, keep state readable, and make it easy to reset back to the complete public collection.
+
 Until real screenshots or videos are attached, fragment previews use deterministic point fields generated from each fragment ID. This keeps the grid light while still giving each record a distinct visual fingerprint.
 
 When covers are ready, set `cover.url` in `data/fragments.manifest.json`. Image URLs render as lightweight stills; `.mp4`, `.webm`, and `.mov` URLs render as muted looping video previews. Heavy scan/player HTML should stay behind `Open fragment`.
