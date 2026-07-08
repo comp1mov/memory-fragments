@@ -2,6 +2,7 @@
   "schemaVersion": "memory-fragment-portal-manifest@0.1",
   "updatedAt": "2026-07-05",
   "source": {
+    "portalRepository": "https://github.com/comp1mov/memory-fragments",
     "githubRepository": "https://github.com/comp1mov/Point-of-View",
     "githubPagesBaseUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments",
     "notes": "Seed catalog for the future Memory Fragment Portal. All current entries point to public GitHub Pages HTML files."

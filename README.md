@@ -115,6 +115,15 @@ Set `NEXT_PUBLIC_SITE_URL` in Vercel if the production URL or custom domain chan
 
 The hyphenated alias `memory-fragments.vercel.app` is already taken outside this project, so the current clean Vercel production alias is `memoryfragments.vercel.app`.
 
+GitHub Actions runs the same validation sequence on push to `main` and on pull requests:
+
+```bash
+npm ci
+npm run validate:manifest
+npm run typecheck
+npm run build
+```
+
 Current local dev URL:
 
 ```text

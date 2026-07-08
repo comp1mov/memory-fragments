@@ -11,6 +11,7 @@
   --warm: #f0ae63;
   --cold: #72d7d0;
   --ink: #050606;
+  --page-x: clamp(16px, 3vw, 40px);
 }
 
 * {
@@ -22,11 +23,12 @@ body {
   min-height: 100%;
   margin: 0;
   background:
-    linear-gradient(180deg, rgba(216, 255, 104, 0.028), rgba(11, 12, 13, 0) 260px),
+    linear-gradient(180deg, rgba(216, 255, 104, 0.025), rgba(11, 12, 13, 0) 280px),
     var(--bg);
   color: var(--text);
   font-family: Inter, "Helvetica Neue", Arial, sans-serif;
   letter-spacing: 0;
+  text-rendering: geometricPrecision;
 }
 
 a {
@@ -42,7 +44,7 @@ a {
 .portal-shell,
 .fragment-page,
 .not-found-page {
-  width: min(1440px, calc(100% - 32px));
+  width: min(1520px, calc(100% - (var(--page-x) * 2)));
   margin: 0 auto;
   padding: 28px 0 56px;
 }
@@ -57,9 +59,15 @@ a {
 }
 
 .portal-header {
-  min-height: 148px;
+  min-height: 172px;
   border-bottom: 1px solid var(--line);
   padding-bottom: 24px;
+}
+
+.portal-title {
+  display: grid;
+  max-width: 980px;
+  gap: 16px;
 }
 
 .kicker,
@@ -79,9 +87,9 @@ p {
 }
 
 h1 {
-  max-width: 900px;
-  font-size: clamp(42px, 6vw, 92px);
-  line-height: 0.94;
+  max-width: 980px;
+  font-size: clamp(42px, 5.5vw, 82px);
+  line-height: 0.96;
   font-weight: 420;
 }
 
@@ -99,6 +107,13 @@ h2 {
   color: var(--muted);
   font-size: 14px;
   line-height: 1.45;
+}
+
+.archive-deck {
+  max-width: 540px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .header-actions,
@@ -161,6 +176,41 @@ h2 {
   color: var(--muted);
 }
 
+.archive-search {
+  display: grid;
+  width: min(420px, 100%);
+  gap: 7px;
+}
+
+.archive-search span {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.archive-search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(244, 241, 234, 0.055);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  outline: 0;
+  padding: 11px 12px 12px;
+}
+
+.archive-search input::placeholder {
+  color: rgba(244, 241, 234, 0.36);
+}
+
+.archive-search input:focus {
+  border-color: rgba(216, 255, 104, 0.5);
+  box-shadow: 0 0 0 3px rgba(216, 255, 104, 0.09);
+}
+
 .detail-actions button {
   font-family: inherit;
 }
@@ -211,7 +261,7 @@ h2 {
 }
 
 .toolbar {
-  padding: 26px 0;
+  padding: 28px 0;
 }
 
 .archive-toolbar {
@@ -221,12 +271,12 @@ h2 {
 .filter-stack {
   display: grid;
   justify-items: end;
-  gap: 8px;
+  gap: 10px;
 }
 
 .fragment-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
   gap: 12px;
 }
 
@@ -256,7 +306,9 @@ h2 {
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--panel);
+  background:
+    linear-gradient(180deg, rgba(244, 241, 234, 0.025), rgba(244, 241, 234, 0)),
+    var(--panel);
   overflow: hidden;
   transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
@@ -275,7 +327,7 @@ h2 {
 
 .card-preview {
   position: relative;
-  aspect-ratio: 1.2 / 1;
+  aspect-ratio: 1.32 / 1;
   overflow: hidden;
   background: var(--ink);
   border-bottom: 1px solid var(--line);
@@ -317,6 +369,29 @@ h2 {
   background: var(--point-color);
   opacity: var(--point-opacity);
   box-shadow: 0 0 12px currentColor;
+}
+
+.preview-labels {
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.preview-labels span {
+  border: 1px solid rgba(244, 241, 234, 0.12);
+  border-radius: 999px;
+  background: rgba(5, 6, 6, 0.62);
+  color: rgba(244, 241, 234, 0.68);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  line-height: 1;
+  padding: 7px 8px;
 }
 
 .card-body {
@@ -522,10 +597,6 @@ h2 {
   .summary-strip,
   .detail-grid,
   .technical-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .fragment-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

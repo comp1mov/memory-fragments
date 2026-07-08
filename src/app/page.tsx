@@ -12,13 +12,14 @@ export default function HomePage() {
   return (
     <main className="portal-shell">
       <header className="portal-header">
-        <div>
+        <div className="portal-title">
           <p className="kicker">post.pointless archive</p>
           <h1>Spatial Memory Fragments</h1>
+          <p className="archive-deck">Public spatial scans, standalone players, and lightweight covers.</p>
         </div>
         <div className="header-actions" aria-label="Portal links">
-          <a href={fragmentManifest.source.githubRepository} target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href={fragmentManifest.source.githubPagesBaseUrl} target="_blank" rel="noopener noreferrer">Fragments</a>
+          <a href={fragmentManifest.source.portalRepository} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={`${fragmentManifest.source.githubRepository}/tree/main/MemoryFragments`} target="_blank" rel="noopener noreferrer">Source</a>
         </div>
       </header>
 

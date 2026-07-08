@@ -21,9 +21,23 @@ function getPointLabel(fragment: MemoryFragment): string {
   return points ? `${Math.round(points / 100000) / 10}M pts` : "scan";
 }
 
+function getSearchDocument(fragment: MemoryFragment): string {
+  return [
+    fragment.title,
+    fragment.subtitle,
+    fragment.place,
+    fragment.category,
+    fragment.artistNote,
+    fragment.player.family,
+    fragment.player.version,
+    fragment.tags.join(" ")
+  ].join(" ").toLowerCase();
+}
+
 export function FragmentGallery({ fragments }: FragmentGalleryProps) {
   const [category, setCategory] = useState("all");
   const [feature, setFeature] = useState<FeatureFilter>("all");
+  const [query, setQuery] = useState("");
 
   const categoryCounts = useMemo(
     () =>
@@ -51,22 +65,27 @@ export function FragmentGallery({ fragments }: FragmentGalleryProps) {
   const visibleFragments = useMemo(
     () =>
       fragments.filter((fragment) => {
+        const normalizedQuery = query.trim().toLowerCase();
         const categoryMatch = category === "all" || fragment.category === category;
         const featureMatch =
           feature === "all" ||
           (feature === "audio" && fragment.features.audioReactive) ||
           (feature === "strudel" && fragment.features.strudel);
+        const queryMatch =
+          normalizedQuery.length === 0 ||
+          getSearchDocument(fragment).includes(normalizedQuery);
 
-        return categoryMatch && featureMatch;
+        return categoryMatch && featureMatch && queryMatch;
       }),
-    [category, feature, fragments]
+    [category, feature, fragments, query]
   );
 
-  const filtersActive = category !== "all" || feature !== "all";
+  const filtersActive = category !== "all" || feature !== "all" || query.trim().length > 0;
 
   function resetFilters() {
     setCategory("all");
     setFeature("all");
+    setQuery("");
   }
 
   return (
@@ -80,6 +99,15 @@ export function FragmentGallery({ fragments }: FragmentGalleryProps) {
         </div>
 
         <div className="filter-stack">
+          <label className="archive-search">
+            <span>Search</span>
+            <input
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="title, place, tag"
+              type="search"
+              value={query}
+            />
+          </label>
           <div className="filter-row" aria-label="Filter by category">
             {categories.map((item) => (
               <button
@@ -121,6 +149,10 @@ export function FragmentGallery({ fragments }: FragmentGalleryProps) {
               <Link href={`/fragments/${fragment.slug}`} className="card-link" aria-label={`Open ${fragment.title}`}>
                 <div className="card-preview">
                   <FragmentPreview fragment={fragment} />
+                  <div className="preview-labels" aria-hidden="true">
+                    <span>{getYearLabel(fragment)}</span>
+                    <span>{getPointLabel(fragment)}</span>
+                  </div>
                 </div>
                 <div className="card-body">
                   <div className="card-meta">
