@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
+import { CopyLinkButton } from "@/components/copy-link-button";
 import { FragmentPreview } from "@/components/fragment-preview";
 import type { MemoryFragment } from "@/lib/fragments";
 
@@ -11,14 +11,14 @@ type FragmentGalleryProps = {
 
 type FeatureFilter = "all" | "audio" | "strudel";
 
-function getYearLabel(fragment: MemoryFragment): string {
-  const match = fragment.dateLabel.match(/\b(20\d{2})\b/);
-  return match ? match[1] : "undated";
-}
-
 function getPointLabel(fragment: MemoryFragment): string {
   const points = fragment.sourceScan.pointCountEstimate;
   return points ? `${Math.round(points / 100000) / 10}M pts` : "scan";
+}
+
+function getDateStamp(fragment: MemoryFragment): string {
+  const parts = fragment.dateLabel.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return parts ? `${parts[3]}.${parts[2]}.${parts[1]}` : fragment.dateLabel;
 }
 
 function getSearchDocument(fragment: MemoryFragment): string {
@@ -38,6 +38,7 @@ export function FragmentGallery({ fragments }: FragmentGalleryProps) {
   const [category, setCategory] = useState("all");
   const [feature, setFeature] = useState<FeatureFilter>("all");
   const [query, setQuery] = useState("");
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
 
   const categoryCounts = useMemo(
     () =>
@@ -86,6 +87,11 @@ export function FragmentGallery({ fragments }: FragmentGalleryProps) {
     setCategory("all");
     setFeature("all");
     setQuery("");
+    setSelectedSlug(null);
+  }
+
+  function toggleFragment(slug: string) {
+    setSelectedSlug((currentSlug) => (currentSlug === slug ? null : slug));
   }
 
   return (
@@ -145,31 +151,58 @@ export function FragmentGallery({ fragments }: FragmentGalleryProps) {
       {visibleFragments.length > 0 ? (
         <section className="fragment-grid" aria-label="Spatial Memory Fragment gallery">
           {visibleFragments.map((fragment, index) => (
-            <article className="fragment-card" key={fragment.id}>
-              <Link href={`/fragments/${fragment.slug}`} className="card-link" aria-label={`Open ${fragment.title}`}>
-                <div className="card-preview">
-                  <FragmentPreview fragment={fragment} />
-                  <div className="preview-labels" aria-hidden="true">
-                    <span>{getYearLabel(fragment)}</span>
-                    <span>{getPointLabel(fragment)}</span>
+            <Fragment key={fragment.id}>
+              <article className={`fragment-card${selectedSlug === fragment.slug ? " is-selected" : ""}`}>
+                <button
+                  aria-expanded={selectedSlug === fragment.slug}
+                  className="card-trigger"
+                  onClick={() => toggleFragment(fragment.slug)}
+                  type="button"
+                >
+                  <div className="card-preview">
+                    <FragmentPreview fragment={fragment} />
+                    <div className="preview-labels" aria-hidden="true">
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <span>{getDateStamp(fragment)}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="card-body">
-                  <div className="card-meta">
-                    <span>{String(index + 1).padStart(2, "0")} / {getYearLabel(fragment)}</span>
-                    <span>{fragment.category}</span>
+                  <div className="card-body">
+                    <div className="card-meta">
+                      <span>{fragment.category}</span>
+                      <span>{getPointLabel(fragment)}</span>
+                    </div>
+                    <h2>{fragment.title}</h2>
+                    <p>{fragment.place}</p>
                   </div>
-                  <h2>{fragment.title}</h2>
-                  <p>{fragment.place}</p>
-                  <div className="badge-row">
-                    <span>{fragment.player.family}</span>
-                    {fragment.features.audioReactive ? <span>audio</span> : null}
-                    {fragment.features.strudel ? <span>strudel</span> : null}
-                    <span>{getPointLabel(fragment)}</span>
+                </button>
+              </article>
+
+              {selectedSlug === fragment.slug ? (
+                <article className="fragment-drawer" aria-label={`${fragment.title} details`}>
+                  <div className="drawer-index">
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <p>{getDateStamp(fragment)}</p>
                   </div>
-                </div>
-              </Link>
-            </article>
+                  <div className="drawer-copy">
+                    <p className="section-label">{fragment.subtitle}</p>
+                    <h2>{fragment.title}</h2>
+                    <p>{fragment.artistNote}</p>
+                    <div className="badge-row">
+                      {fragment.tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="drawer-actions">
+                    <a href={fragment.entry.githubPagesUrl} target="_blank" rel="noopener noreferrer">
+                      Open fragment
+                    </a>
+                    <a href={`/fragments/${fragment.slug}`}>Permalink</a>
+                    <CopyLinkButton path={`/fragments/${fragment.slug}`} />
+                  </div>
+                </article>
+              ) : null}
+            </Fragment>
           ))}
         </section>
       ) : (

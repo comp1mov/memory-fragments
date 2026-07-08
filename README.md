@@ -59,6 +59,8 @@ The current default is to open each fragment/player in a new tab. HTML download 
 
 The grid uses only `public` fragments. Fragment routes are generated for all `published` fragments, so future `unlisted` records can be shared directly without appearing in the public grid.
 
+The public grid should behave like a contact sheet: clicking a cover opens an inline detail drawer inside the grid instead of navigating away. The `/fragments/[slug]` route remains useful as a permalink/share page, but the main browsing flow should stay on `/`.
+
 Fragment detail pages do not embed the heavy legacy scan/player by default. They use a lightweight cover slot from the manifest; until screenshots or videos are added, the slot renders a static placeholder. The actual scan opens only through `Open fragment`.
 
 Public sitemap output uses only the same `public` grid records. `unlisted` fragments should stay out of the grid and sitemap, while still being available by direct `/fragments/[slug]` URL when `status` is `published`.
