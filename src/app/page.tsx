@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <main className="portal-shell">
       <header className="portal-header">
-        <h1>memory fragments</h1>
+        <h1>Memory fragments</h1>
       </header>
 
       <FragmentGallery fragments={fragments} />
