@@ -85,6 +85,25 @@ Until real screenshots or videos are attached, fragment previews use determinist
 
 When covers are ready, set `cover.url` in `data/fragments.manifest.json`. Image URLs render as lightweight stills; `.mp4`, `.webm`, and `.mov` URLs render as muted looping video previews. Heavy scan/player HTML should stay behind `Open fragment`.
 
+## Working With Covers And Visibility
+
+Use `visibility` in `data/fragments.manifest.json` to control the public grid:
+
+- `public`: appears on `/`;
+- `unlisted`: hidden from `/`, still available by direct `/fragments/[slug]` link;
+- `private`: reserved for a later protected storage/auth phase.
+
+For screenshots, add files to `public/covers/` and point the fragment to them:
+
+```json
+"cover": {
+  "status": "ready",
+  "url": "/covers/algorhythms-ar.jpg"
+}
+```
+
+Recommended filename pattern: use the fragment slug, for example `dasha-kiryat-hamelacha.jpg`.
+
 ## Local Commands
 
 ```bash
