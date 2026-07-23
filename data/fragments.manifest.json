@@ -1,6 +1,6 @@
 {
   "schemaVersion": "memory-fragment-portal-manifest@0.1",
-  "updatedAt": "2026-07-05",
+  "updatedAt": "2026-07-23",
   "source": {
     "portalRepository": "https://github.com/comp1mov/memory-fragments",
     "githubRepository": "https://github.com/comp1mov/Point-of-View",
@@ -331,6 +331,46 @@
         "type": "dropbox-direct",
         "pointCountEstimate": null,
         "url": "https://dl.dropboxusercontent.com/scl/fi/gao6wbu0t00di7on0g8tx/scan-at-13.48-Marselle-GreyCakes-Home-23-04-2025.ply?rlkey=1xsk5wtclg5uhadmbl4bnkbyt&"
+      },
+      "cover": {
+        "status": "needed",
+        "url": ""
+      }
+    },
+    {
+      "id": "mf-round-robin-hosq-dilijan",
+      "slug": "round-robin-hosq-dilijan",
+      "title": "Round Robin, HOSQ",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "Villa3, Dilijan, Armenia",
+      "dateLabel": "2026-07-21 16:04",
+      "category": "performance",
+      "artistNote": "Spatial memory fragment from Round Robin / HOSQ at Villa3 in Dilijan.",
+      "visibility": "unlisted",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": ["dilijan", "hosq", "performance", "strudel"],
+      "player": {
+        "family": "audio-strudel",
+        "version": "master-v056",
+        "basedOn": "memory-fragment-master"
+      },
+      "features": {
+        "audioReactive": false,
+        "strudel": true,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "round-robin-hosq-dilijan.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/round-robin-hosq-dilijan.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/round-robin-hosq-dilijan.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/round-robin-hosq-dilijan.html",
+        "localReference": "MemoryFragments/round-robin-hosq-dilijan.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 3000000,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/stiqzxxy09ck63alwfifo/RobinRound_Merged_3mln.ply?rlkey=jhhkk7coeviebjykm7hqzzek6"
       },
       "cover": {
         "status": "needed",
