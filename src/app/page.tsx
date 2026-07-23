@@ -1,16 +1,10 @@
-import { FragmentGallery } from "@/components/fragment-gallery";
-import { getGridFragments } from "@/lib/fragments";
-
 export default function HomePage() {
-  const fragments = getGridFragments();
-
   return (
-    <main className="portal-shell">
-      <header className="portal-header">
+    <main className="coming-soon-page">
+      <section className="coming-soon-panel" aria-label="Memory Fragments coming soon">
         <h1>Memory fragments</h1>
-      </header>
-
-      <FragmentGallery fragments={fragments} />
+        <p>Coming Soon</p>
+      </section>
     </main>
   );
 }
