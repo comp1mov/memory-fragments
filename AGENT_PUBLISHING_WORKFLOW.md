@@ -118,6 +118,12 @@ If TypeScript is needed on Windows and `tsconfig.tsbuildinfo` is blocked:
 .\node_modules\.bin\tsc.cmd --noEmit --incremental false
 ```
 
+## Camera Troubleshooting
+
+If mouse wheel zoom or camera orbit behaves strangely on only one computer,
+check the browser page zoom before changing player controls. Set page zoom to
+100% with `Ctrl + 0`, then reload the fragment.
+
 ## Publishing
 
 Push two commits:
