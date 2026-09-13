@@ -38,10 +38,14 @@ export async function generateMetadata({
   }
 
   const fragmentPath = `/fragments/${fragment.slug}`;
+  const coverImage = fragment.cover.status === "ready" && /\.(avif|gif|jpe?g|png|webp)(?:[?#]|$)/i.test(fragment.cover.url)
+    ? new URL(fragment.cover.url, getSiteUrl()).toString()
+    : undefined;
 
   return {
     title: fragment.title,
     description: `${fragment.subtitle} in ${fragment.place}.`,
+    robots: fragment.visibility === "public" ? undefined : { index: false, follow: false },
     alternates: {
       canonical: fragmentPath
     },
@@ -49,12 +53,14 @@ export async function generateMetadata({
       title: fragment.title,
       description: `${fragment.subtitle} in ${fragment.place}.`,
       url: `${getSiteUrl()}${fragmentPath}`,
-      type: "article"
+      type: "article",
+      images: coverImage ? [{ url: coverImage, alt: `${fragment.title}, ${fragment.place}` }] : undefined
     },
     twitter: {
-      card: "summary",
+      card: coverImage ? "summary_large_image" : "summary",
       title: fragment.title,
-      description: `${fragment.subtitle} in ${fragment.place}.`
+      description: `${fragment.subtitle} in ${fragment.place}.`,
+      images: coverImage ? [coverImage] : undefined
     }
   };
 }

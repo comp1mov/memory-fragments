@@ -1,6 +1,6 @@
 {
   "schemaVersion": "memory-fragment-portal-manifest@0.1",
-  "updatedAt": "2026-07-23",
+  "updatedAt": "2026-09-13",
   "source": {
     "portalRepository": "https://github.com/comp1mov/memory-fragments",
     "githubRepository": "https://github.com/comp1mov/Point-of-View",
@@ -375,6 +375,53 @@
       "cover": {
         "status": "needed",
         "url": ""
+      }
+    },
+    {
+      "id": "mf-lynden-bd",
+      "slug": "lynden-bd",
+      "title": "Lynden BD",
+      "subtitle": "Spatial Memory Fragment",
+      "place": "The Sun Inn, Barnes, London, UK",
+      "dateLabel": "2025-04-05 19:14",
+      "category": "birthday",
+      "artistNote": "Lynden's birthday, from Olympic Studios to The Sun Inn. One more round, a room full of friends, and a little piece of the evening kept in points.",
+      "visibility": "unlisted",
+      "status": "published",
+      "downloadEnabled": false,
+      "tags": [
+        "london",
+        "barnes",
+        "birthday",
+        "friends",
+        "audio",
+        "strudel"
+      ],
+      "player": {
+        "family": "audio-strudel",
+        "version": "lynden-v1",
+        "basedOn": "hosq-v052.7-anchor-safe-arrows"
+      },
+      "features": {
+        "audioReactive": true,
+        "strudel": true,
+        "legacyHtml": true
+      },
+      "entry": {
+        "htmlFile": "lynden-bd.html",
+        "githubPagesUrl": "https://comp1mov.github.io/Point-of-View/MemoryFragments/lynden-bd.html",
+        "githubBlobUrl": "https://github.com/comp1mov/Point-of-View/blob/main/MemoryFragments/lynden-bd.html",
+        "rawUrl": "https://raw.githubusercontent.com/comp1mov/Point-of-View/main/MemoryFragments/lynden-bd.html",
+        "localReference": "apps/memory-fragment-portal/artifacts/lynden-bd.html"
+      },
+      "sourceScan": {
+        "type": "dropbox-direct",
+        "pointCountEstimate": 2543769,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/nt1pclvyjakru6dkhtgds/Birthday_2025_pub.ply?rlkey=kzyzt44504u9hq07zq8k2fph2"
+      },
+      "cover": {
+        "status": "ready",
+        "url": "/covers/lynden-bd.jpg"
       }
     }
   ]
