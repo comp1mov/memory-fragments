@@ -1524,6 +1524,7 @@ const FRAGMENT = {
 
             pointSize: 0.0055,
             randomSize: 0.7,
+            scanColor: { saturation: 1.16, contrast: 1.14 },
             
             pointSizeByDistance: true,
             minDistance: 0.0,
@@ -3930,6 +3931,8 @@ if (window.anchorMesh) {
         `;
 
         const fragmentShader = `
+            uniform float scanSaturation;
+            uniform float scanContrast;
             uniform float introRevealRadius;
             uniform float introRimThickness;
             uniform vec3 introRimColor;
@@ -3950,7 +3953,14 @@ if (window.anchorMesh) {
                 if (vDist > introRevealRadius) discard;
                 
                 float edgeFade = smoothstep(introRevealRadius - introRimThickness, introRevealRadius, vDist);
-                vec3 baseColor = mix(vColor, introRimColor, edgeFade * 0.5);
+                // Grade the scan in display space, keeping the wave colours independent.
+                vec3 scanColor = pow(max(vColor, vec3(0.0)), vec3(1.0 / 2.2));
+                float scanLuma = dot(scanColor, vec3(0.2126, 0.7152, 0.0722));
+                scanColor = clamp(mix(vec3(scanLuma), scanColor, scanSaturation), 0.0, 1.0);
+                // A soft contrast curve preserves black/white endpoints without clipping shadows.
+                scanColor += (scanContrast - 1.0) * (scanColor - 0.5) * (1.0 - abs(2.0 * scanColor - 1.0));
+                vec3 gradedColor = pow(clamp(scanColor, 0.0, 1.0), vec3(2.2));
+                vec3 baseColor = mix(gradedColor, introRimColor, edgeFade * 0.5);
                 vec3 finalColor = baseColor;
                 float alpha = 1.0;
 
@@ -4173,6 +4183,8 @@ if (window.anchorMesh) {
             const material = new THREE.ShaderMaterial({
                 uniforms: {
                     pointSize: { value: CONFIG.pointSize },
+                    scanSaturation: { value: CONFIG.scanColor.saturation },
+                    scanContrast: { value: CONFIG.scanColor.contrast },
                     randomSize: { value: CONFIG.randomSize },
                     pointSizeByDistance: { value: CONFIG.pointSizeByDistance },
                     minDistance: { value: CONFIG.minDistance },

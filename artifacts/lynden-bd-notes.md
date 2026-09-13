@@ -22,6 +22,8 @@ New-copy fixes: camera transitions synchronize the smooth-wheel zoom distance, a
 
 The iPad revision uses AlgoRhythms native OrbitControls gestures and native wheel zoom with push-through at minimum distance. HOSQ smooth-wheel zoom and touch arrows are disabled: its wheel-distance easing was undoing native pinch zoom. Pointer input interrupts automatic transitions before OrbitControls receives the event. Coarse-pointer music/help targets are 44 pixels. Point size is 0.0055 (previously 0.004); size variation remains 0.7. Audio sweeps and coloured flicker use amber/orange tones.
 
+Scan colour revision: saturation 1.16 and soft contrast 1.14 in display space, applied before intro/audio colour overlays. The contrast curve preserves black and white endpoints. Point size, cameras, intro timing, music and wave colours are unchanged.
+
 ## Music
 
 Cheers is the user-supplied 112 BPM Strudel score, preserved without musical changes: a relaxed groove with piano, guitar, bass and percussion, a build-up, a more active section and a return to calm. Only the track title appears in the loading-screen music credit.
