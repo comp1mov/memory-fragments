@@ -6,6 +6,7 @@ let html=fs.readFileSync('artifacts/lynden-bd.html','utf8');
 const end=html.indexOf('</script>',html.indexOf('<script type="module">'));
 html=html.slice(0,end)+`\nwindow.audioReview={config:CONFIG,state:()=>({music:musicPlaying,enabled:audioState.enabled,source:audioState.source,pending:audioState.pendingSource})};\n`+html.slice(end);
 const scan=fs.readFileSync(path.join(process.env.TEMP,'lynden-birthday.ply'));
+const publishedScan=fs.readFileSync(process.env.LYNDEN_SCAN || 'dist/lynden-published-scan.ply');
 (async()=>{
  const browser=await chromium.connectOverCDP(process.argv[2]);
  const context=await browser.newContext({viewport:{width:1024,height:768},hasTouch:true}),page=await context.newPage(),errors=[];
@@ -32,6 +33,7 @@ const scan=fs.readFileSync(path.join(process.env.TEMP,'lynden-birthday.ply'));
   };
  });
  await context.route('**/Birthday_2025_pub.ply?*',route=>route.fulfill({body:scan,contentType:'application/octet-stream',headers:{'access-control-allow-origin':'*'}}));
+ await context.route('**/Lynden_Birthday_2025_pub.ply?*',route=>route.fulfill({body:publishedScan,contentType:'application/octet-stream',headers:{'access-control-allow-origin':'*'}}));
  await context.route('http://127.0.0.1:4175/lynden-bd.html',route=>route.fulfill({body:html,contentType:'text/html'}));
  const state=()=>page.evaluate(()=>window.audioReview.state());
  async function expectSource(source){await page.waitForFunction(source=>window.audioReview.state().source===source,source,{timeout:90000});}

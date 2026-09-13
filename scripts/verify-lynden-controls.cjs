@@ -4,6 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const assert=require('node:assert/strict');
 const baseline=process.argv.includes('--baseline');
+const project=JSON.parse(fs.readFileSync('data/lynden-bd.craft.json','utf8'));
 const source=baseline?'../../.publish-point-of-view-fresh/MemoryFragments/lynden-bd.html':'artifacts/lynden-bd.html';
 let html=fs.readFileSync(source,'utf8');
 const start=html.indexOf('<script type="module">'),end=html.indexOf('</script>',start);
@@ -12,13 +13,13 @@ html=html.slice(0,end)+`\nwindow.lyndenReview={
   state:()=>({distance:camera.position.distanceTo(controls.target),position:camera.position.toArray(),target:controls.target.toArray(),intro:!!window.__introRunning,music:musicPlaying,audio:audioState.enabled,transition:CAMSYS.inTransition}),
   startTour:()=>{CAMSYS.autoMode=true;_startTransition(_poseFromConfig(CONFIG.cameraSystem.presets['1']),5000);},
 };\n`+html.slice(end);
-const scan=fs.readFileSync(path.join(process.env.TEMP,'lynden-birthday.ply'));
+const scan=fs.readFileSync(process.env.LYNDEN_SCAN || 'dist/lynden-published-scan.ply');
 (async()=>{
  const browser=await chromium.connectOverCDP(process.argv[2]);
  const context=await browser.newContext({viewport:{width:1024,height:1366},hasTouch:true,isMobile:true,deviceScaleFactor:1});
  const page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
- await context.route('**/Birthday_2025_pub.ply?*',route=>route.fulfill({body:scan,contentType:'application/octet-stream',headers:{'access-control-allow-origin':'*'}}));
+ await context.route('**/*Birthday_2025_pub.ply?*',route=>route.fulfill({body:scan,contentType:'application/octet-stream',headers:{'access-control-allow-origin':'*'}}));
  await context.route('http://127.0.0.1:4175/lynden-bd.html',route=>route.fulfill({body:html,contentType:'text/html'}));
  const state=()=>page.evaluate(()=>window.lyndenReview.state());
  try{
@@ -52,7 +53,7 @@ const scan=fs.readFileSync(path.join(process.env.TEMP,'lynden-birthday.ply'));
   assert.equal(await page.locator('#touch-nav').isVisible(),false);
   assert.equal(await page.locator('#corner-music').count(),0);
   assert.equal(await page.locator('#corner-strudel').textContent(),'@');
-  assert.equal(await page.evaluate(()=>window.pointCloudMaterial.uniforms.pointSize.value),.0055);
+  assert.equal(await page.evaluate(()=>window.pointCloudMaterial.uniforms.pointSize.value),project.config.pointSize);
   const colors=await page.evaluate(()=>['scan1ColorX','scan1ColorY','scan1ColorZ','flicker2Color','flicker3Color','scan2Color'].map(k=>window.pointCloudMaterial.uniforms[k].value.toArray()));
   assert(colors.every(([r,g,b])=>r>g&&g>b),'All sweeps must use warm orange hues');
   assert.equal(await page.evaluate(()=>window.lyndenReview.config.introAnimation.duration),70000);

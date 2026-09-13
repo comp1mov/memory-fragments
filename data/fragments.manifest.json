@@ -416,12 +416,12 @@
       },
       "sourceScan": {
         "type": "dropbox-direct",
-        "pointCountEstimate": 2543769,
-        "url": "https://dl.dropboxusercontent.com/scl/fi/nt1pclvyjakru6dkhtgds/Birthday_2025_pub.ply?rlkey=kzyzt44504u9hq07zq8k2fph2"
+        "pointCountEstimate": 2513792,
+        "url": "https://dl.dropboxusercontent.com/scl/fi/0ufkh9m31wpqj6byn24yn/Lynden_Birthday_2025_pub.ply?rlkey=sssyk559nambcy8dqmvrj72lm"
       },
       "cover": {
         "status": "ready",
-        "url": "/covers/lynden-bd.jpg"
+        "url": "/covers/lynden-bd.png"
       }
     }
   ]
