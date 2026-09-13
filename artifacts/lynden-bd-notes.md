@@ -32,6 +32,8 @@ The standalone player applies a 0.4 postgain at playback to leave headroom for s
 
 The single `@` button starts/stops Cheers and its audio response. There is no separate Play button. It loads `@strudel/web@1.3.0`, Dirt-Samples percussion/guitar sounds and the dough-samples piano. Samples are preloaded before the first beat. Music starts only after a click. The analyser drives the point effects without requesting microphone permission. The Strudel editor link contains the same score as the HTML. Closing the optional editor unloads its iframe to prevent hidden audio overlapping the player.
 
+The separate wave button enables microphone-driven visuals without starting music or monitoring the microphone through speakers. It requests microphone access only on an explicit click. Switching to music releases microphone tracks; switching to microphone mode stops the track. Permission denial and cancellation leave audio off. A late permission response is discarded after a source change. These are runtime modes and do not alter saved project settings.
+
 Integration reference: https://strudel.cc/technical-manual/project-start/
 Samples reference: https://strudel.cc/learn/samples/
 

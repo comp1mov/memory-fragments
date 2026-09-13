@@ -1034,7 +1034,7 @@
         <span id="music-status" role="status"></span>
         <a id="fragment-portal" href="https://memoryfragments.vercel.app/" target="_blank" rel="noopener">Memory fragments</a>
         <button id="corner-strudel" type="button" aria-label="Play Cheers" title="Play Cheers" aria-pressed="false">@</button>
-        <button id="corner-audio-reactive" type="button" aria-label="Audio Reactive toggle">∿</button>
+        <button id="corner-audio-reactive" type="button" aria-label="Enable microphone reaction" title="Enable microphone reaction" aria-pressed="false">∿</button>
         <button id="corner-help" type="button" aria-label="Help">?</button>
     </div>
 
@@ -1653,6 +1653,8 @@ const FRAGMENT = {
             StrudelController.close();
             musicBusy = true;
             musicButton.disabled = true;
+            updateAudioReactiveCornerBtn();
+            await setAudioReactiveEnabled(false);
             musicStatus.textContent = 'Loading music...';
             try {
                 await loadBirthdayMusic();
@@ -1675,7 +1677,7 @@ const FRAGMENT = {
                     await new Promise(resolve => setTimeout(resolve, 50));
                 }
                 if (!window.analysers[STRUDEL_ANALYSER_ID]) throw new Error('Music analyser did not start');
-                await setAudioReactiveEnabled(true);
+                await setAudioReactiveEnabled(true, 'strudel');
                 updateAudioReactiveCornerBtn();
                 musicStatus.textContent = '';
             } catch (error) {
@@ -1686,6 +1688,7 @@ const FRAGMENT = {
                 musicBusy = false;
                 musicButton.disabled = false;
                 updateMusicButton();
+                updateAudioReactiveCornerBtn();
             }
         }
         musicButton.addEventListener('click', toggleBirthdayMusic);
@@ -2659,19 +2662,28 @@ const StrudelController = (() => {
         const cornerAudioReactiveBtn = document.getElementById('corner-audio-reactive');
         function updateAudioReactiveCornerBtn() {
             if (!cornerAudioReactiveBtn) return;
-            cornerAudioReactiveBtn.classList.toggle('is-active', audioState.enabled);
-            cornerAudioReactiveBtn.textContent = audioState.enabled ? '∿' : '∿';
+            const pending = audioState.pendingSource === 'mic';
+            const active = audioState.enabled && audioState.source === 'mic';
+            const label = pending ? 'Cancel microphone request' : active ? 'Disable microphone reaction' : 'Enable microphone reaction';
+            cornerAudioReactiveBtn.classList.toggle('is-active', active || pending);
+            cornerAudioReactiveBtn.setAttribute('aria-pressed', String(active || pending));
+            cornerAudioReactiveBtn.setAttribute('aria-busy', String(pending));
+            cornerAudioReactiveBtn.setAttribute('aria-label', label);
+            cornerAudioReactiveBtn.title = label;
+            cornerAudioReactiveBtn.disabled = musicBusy;
         }
-        if (cornerAudioReactiveBtn) {
-            cornerAudioReactiveBtn.addEventListener('click', async () => {
-                if (!musicPlaying) { await toggleBirthdayMusic(); return; }
-                const next = !audioState.enabled;
-                await setAudioReactiveEnabled(next);
-                updateAudioReactiveCornerBtn();
-                const gainRow = document.getElementById('help-audio-gain-row');
-                if (gainRow) gainRow.style.display = audioState.enabled ? 'flex' : 'none';
-            });
+        async function toggleMicrophoneReactive() {
+            if (musicBusy) return;
+            if (audioState.source === 'mic' || audioState.pendingSource === 'mic') {
+                await setAudioReactiveEnabled(false);
+                musicStatus.textContent = '';
+                return;
+            }
+            StrudelController.close();
+            if (musicPlaying) await stopBirthdayMusic();
+            await setAudioReactiveEnabled(true, 'mic');
         }
+        if (cornerAudioReactiveBtn) cornerAudioReactiveBtn.addEventListener('click', toggleMicrophoneReactive);
 // Add Strudel controls into Help panel (optional editor)
         if (helpBodyEl && CONFIG.strudel && CONFIG.strudel.enabled && CONFIG.strudel.showInHelp) {
             const strudelSection = document.createElement('div');
@@ -4450,6 +4462,7 @@ window.pointCloudMesh.rotation.z = baseZ + spinZ;
         const audioState = {
             enabled: false,
             source: null, // \"mic\" or \"strudel\"
+            pendingSource: null,
             ctx: null,
             analyser: null,
             freq: null,
@@ -4458,6 +4471,7 @@ window.pointCloudMesh.rotation.z = baseZ + spinZ;
             sampleRate: 48000,
             bands: null
         };
+        let audioActivation = 0;
 
         // Lite Mode (fast, guaranteed)
         const liteState = {
@@ -4543,7 +4557,15 @@ window.pointCloudMesh.rotation.z = baseZ + spinZ;
         }
 
 function updateAudioHelpUI() {
+            updateAudioReactiveCornerBtn();
+            const gainRow = document.getElementById('help-audio-gain-row');
+            if (gainRow) gainRow.style.display = audioState.enabled ? 'flex' : 'none';
             if (!helpAudioToggleEl) return;
+            helpAudioToggleEl.title = audioState.source === 'mic' ? 'Disable microphone reaction' : 'Enable microphone reaction';
+            if (audioState.pendingSource === 'mic') {
+                helpAudioToggleEl.textContent = 'audio: requesting mic';
+                return;
+            }
             if (!audioState.enabled) {
                 helpAudioToggleEl.textContent = 'audio: off';
                 return;
@@ -4552,56 +4574,28 @@ function updateAudioHelpUI() {
             helpAudioToggleEl.textContent = (src === 'mic') ? 'audio: mic' : (src === 'strudel' ? 'audio: strudel' : 'audio: on');
         }
 
-        async function setAudioReactiveEnabled(enabled) {
-            const sourcePref = (CONFIG.audioReactive && CONFIG.audioReactive.source)
-                ? CONFIG.audioReactive.source
-                : 'mic';
-
-            if (sourcePref !== 'strudel') {
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    console.warn('getUserMedia is not available in this browser');
-                    return;
+        async function setAudioReactiveEnabled(enabled, sourcePref = 'mic') {
+            // A later stop/source change invalidates an outstanding permission request.
+            const activation = ++audioActivation;
+            const oldStream = audioState.stream, oldContext = audioState.ctx;
+            Object.assign(audioState, {enabled: false, source: null, pendingSource: null, ctx: null, analyser: null, freq: null, stream: null, level: 0, bands: null});
+            if (oldStream) oldStream.getTracks().forEach(track => track.stop());
+            if (oldContext && oldContext.state !== 'closed') void oldContext.close().catch(() => {});
+            if (window.pointCloudMaterial && window.pointCloudMaterial.uniforms.audioLevel) {
+                window.pointCloudMaterial.uniforms.audioLevel.value = 0.0;
+                for (const name of ['scan1Intensity', 'scan2Intensity', 'pulseStrength', 'flickerFade', 'flicker2Fade', 'flicker3Fade']) {
+                    window.pointCloudMaterial.uniforms[name].value = 0;
                 }
             }
-if (!enabled) {
-                audioState.enabled = false;
-                audioState.source = null;
-                updateAudioHelpUI();
-                if (helpAudioLevelEl) helpAudioLevelEl.textContent = '';
-                try {
-                    if (audioState.stream) {
-                        audioState.stream.getTracks().forEach(t => t.stop());
-                    }
-                } catch (e) {}
-                try {
-                    if (audioState.ctx && audioState.ctx.state !== 'closed') {
-                        await audioState.ctx.close();
-                    }
-                } catch (e) {}
-                audioState.ctx = null;
-                audioState.analyser = null;
-                audioState.freq = null;
-                audioState.stream = null;
-                audioState.level = 0;
-                audioState.bands = null;
-                if (window.pointCloudMaterial && window.pointCloudMaterial.uniforms.audioLevel) {
-                    window.pointCloudMaterial.uniforms.audioLevel.value = 0.0;
-                    for (const name of ['scan1Intensity', 'scan2Intensity', 'pulseStrength', 'flickerFade', 'flicker2Fade', 'flicker3Fade']) {
-                        window.pointCloudMaterial.uniforms[name].value = 0;
-                    }
-                }
-                return;
-            }
+            updateAudioHelpUI();
+            if (helpAudioLevelEl) helpAudioLevelEl.textContent = '';
+            if (!enabled) return false;
 
             // Strudel source: use analyser created by .analyze(STRUDEL_ANALYSER_ID)
             if (sourcePref === 'strudel') {
                 const analyser = (window.analysers && window.analysers[STRUDEL_ANALYSER_ID]) ? window.analysers[STRUDEL_ANALYSER_ID] : null;
                 if (!analyser) {
-                    audioState.enabled = false;
-                    audioState.source = null;
-                    updateAudioHelpUI();
-                    if (helpAudioLevelEl) helpAudioLevelEl.textContent = 'strudel: no analyser';
-                    return;
+                    throw new Error('Music analyser is unavailable');
                 }
 
                 try {
@@ -4622,19 +4616,30 @@ if (!enabled) {
 
                 updateAudioHelpUI();
                 if (helpAudioLevelEl) helpAudioLevelEl.textContent = 'strudel: active';
-                return;
+                return true;
             }
 
+            let stream = null, ctx = null;
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({
+                if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microphone requires HTTPS and a supported browser');
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) throw new Error('Web Audio is unavailable');
+                // Create on the user gesture; never connect this graph to the speakers.
+                ctx = new AudioCtx();
+                audioState.ctx = ctx;
+                audioState.pendingSource = 'mic';
+                updateAudioHelpUI();
+                musicStatus.textContent = 'Waiting for microphone permission...';
+                stream = await navigator.mediaDevices.getUserMedia({
                     audio: {
                         echoCancellation: false,
                         noiseSuppression: false,
                         autoGainControl: false
                     }
                 });
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                const ctx = new AudioCtx();
+                if (activation !== audioActivation) return false;
+                await ctx.resume();
+                if (activation !== audioActivation) return false;
                 const srcNode = ctx.createMediaStreamSource(stream);
                 const analyser = ctx.createAnalyser();
                 analyser.fftSize = 8192;
@@ -4643,23 +4648,40 @@ if (!enabled) {
 
                 audioState.enabled = true;
                 audioState.source = 'mic';
+                audioState.pendingSource = null;
                 audioState.ctx = ctx;
                 audioState.analyser = analyser;
                 audioState.freq = new Uint8Array(analyser.frequencyBinCount);
                 audioState.stream = stream;
                 audioState.level = 0;
                 audioState.sampleRate = ctx.sampleRate || audioState.sampleRate;
-                audioState.sampleRate = ctx.sampleRate || audioState.sampleRate;
                 const bandsCount = (CONFIG.audioReactive && CONFIG.audioReactive.bands) ? CONFIG.audioReactive.bands : 8;
                 audioState.bands = new Float32Array(bandsCount);
 
                 updateAudioHelpUI();
                 if (helpAudioLevelEl) helpAudioLevelEl.textContent = 'mic: active';
+                musicStatus.textContent = '';
+                const activeStream = stream;
+                for (const track of stream.getTracks()) track.addEventListener('ended', () => {
+                    if (audioState.stream !== activeStream) return;
+                    void setAudioReactiveEnabled(false);
+                    musicStatus.textContent = 'Microphone disconnected';
+                });
+                return true;
             } catch (err) {
-                console.warn('Audio reactive failed:', err);
-                audioState.enabled = false;
-                updateAudioHelpUI();
-                if (helpAudioLevelEl) helpAudioLevelEl.textContent = 'mic: denied';
+                if (activation === audioActivation) {
+                    audioState.pendingSource = null;
+                    updateAudioHelpUI();
+                    if (helpAudioLevelEl) helpAudioLevelEl.textContent = 'mic: unavailable';
+                    musicStatus.textContent = err.name === 'NotAllowedError'
+                        ? 'Microphone permission denied'
+                        : 'Microphone unavailable. Check the browser audio input.';
+                }
+                return false;
+            } finally {
+                if (stream && audioState.stream !== stream) stream.getTracks().forEach(track => track.stop());
+                if (audioState.ctx === ctx && audioState.source !== 'mic') audioState.ctx = null;
+                if (ctx && audioState.ctx !== ctx && ctx.state !== 'closed') void ctx.close().catch(() => {});
             }
         }
 
@@ -4769,14 +4791,7 @@ if (!enabled) {
 
         if (helpAudioToggleEl) {
             updateAudioHelpUI();
-            helpAudioToggleEl.addEventListener('click', async () => {
-                const next = !audioState.enabled;
-                await setAudioReactiveEnabled(next);
-                if (typeof updateAudioReactiveCornerBtn === 'function') updateAudioReactiveCornerBtn();
-                // Show/hide gain slider
-                const gainRow = document.getElementById('help-audio-gain-row');
-                if (gainRow) gainRow.style.display = audioState.enabled ? 'flex' : 'none';
-            });
+            helpAudioToggleEl.addEventListener('click', toggleMicrophoneReactive);
         }
 
         // Gain slider
