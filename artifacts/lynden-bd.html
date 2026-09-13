@@ -532,6 +532,30 @@
             border-color: rgba(255,255,255,0.55);
             background: rgba(255,255,255,0.10);
         }
+        #corner-strudel { padding: 0; line-height: 0; }
+        #corner-strudel svg { width: 16px; height: 16px; vertical-align: middle; }
+        #corner-strudel .music-icon-stop { display: none; }
+        #corner-strudel[aria-pressed="true"] .music-icon-play { display: none; }
+        #corner-strudel[aria-pressed="true"] .music-icon-stop { display: inline-block; }
+        #help-strudel-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 0 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            color: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.05);
+            font-size: 12px;
+            letter-spacing: 0;
+            text-decoration: none;
+        }
+        #help-strudel-link:hover { background: rgba(255,255,255,0.12); }
+        #help-strudel-link:focus-visible { outline: 2px solid #ed9b51; outline-offset: 3px; }
+        #help-strudel-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+        #help-strudel-link[hidden] { display: none; }
 
         #corner-audio-reactive {
             position: fixed;
@@ -1033,7 +1057,21 @@
         <div id="corner-heart"></div>
         <span id="music-status" role="status"></span>
         <a id="fragment-portal" href="https://memoryfragments.vercel.app/" target="_blank" rel="noopener">Memory fragments</a>
-        <button id="corner-strudel" type="button" aria-label="Play Cheers" title="Play Cheers" aria-pressed="false">@</button>
+        <!-- Lucide 0.468.0 icons (ISC License).
+        Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT).
+        All other copyright (c) for Lucide are held by Lucide Contributors 2022.
+        Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee
+        is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+        THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE
+        INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE
+        FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+        OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+        OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+        -->
+        <button id="corner-strudel" type="button" aria-label="Play Cheers" title="Play Cheers" aria-pressed="false">
+            <svg class="music-icon-play lucide lucide-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+            <svg class="music-icon-stop lucide lucide-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"></rect></svg>
+        </button>
         <button id="corner-audio-reactive" type="button" aria-label="Enable microphone reaction" title="Enable microphone reaction" aria-pressed="false">∿</button>
         <button id="corner-help" type="button" aria-label="Help">?</button>
     </div>
@@ -1113,6 +1151,10 @@
                 </div>
 
                 <div id="help-info-section" style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
+                    <a id="help-strudel-link" target="_blank" rel="noopener noreferrer" title="Edit Cheers in a new Strudel tab">
+                        <svg class="lucide lucide-external-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                        <span>Open in Strudel</span>
+                    </a>
                     <button id="help-controls-toggle" type="button" style="font-size:12px; padding:8px 0; width:100%; border-radius:4px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.5); cursor:pointer; letter-spacing:2px; text-transform:uppercase;">controls</button>
                     <div id="help-controls-content" style="display:none; margin-bottom:4px;">
                         <div id="help-controls-inline" style="font-size:11px; opacity:0.6; line-height:1.7; padding:4px 0;">
@@ -2132,7 +2174,6 @@ CONFIG.plyUrl = FRAGMENT.scanUrl;
             musicButton.setAttribute('aria-pressed', String(musicPlaying));
             musicButton.setAttribute('aria-label', label);
             musicButton.title = label;
-            musicButton.textContent = '@';
             musicButton.classList.toggle('is-playing', musicPlaying);
         }
 
@@ -2180,7 +2221,7 @@ CONFIG.plyUrl = FRAGMENT.scanUrl;
             } catch (error) {
                 console.error('[Lynden music]', error);
                 await stopBirthdayMusic();
-                musicStatus.textContent = 'Music unavailable. Tap @ to retry.';
+                musicStatus.textContent = 'Music unavailable. Tap Play to retry.';
             } finally {
                 musicBusy = false;
                 musicButton.disabled = false;
@@ -2427,6 +2468,12 @@ function setCanvasVisible(visible, durationMs = 450) {
         const helpPanelEl = document.getElementById('help-panel');
         const helpCloseBtn = document.getElementById('help-close');
         const helpBodyEl = document.getElementById('help-body');
+        const helpStrudelLink = document.getElementById('help-strudel-link');
+        helpStrudelLink.hidden = !FRAGMENT.strudelTrackUrl;
+        if (FRAGMENT.strudelTrackUrl) {
+            helpStrudelLink.href = FRAGMENT.strudelTrackUrl;
+            helpStrudelLink.title = `Edit ${FRAGMENT.musicCredit.name} in a new Strudel tab`;
+        }
 
         // Show or hide corner UI
         if (cornerUIEl) {
@@ -2595,6 +2642,9 @@ if (helpPointsEl) helpPointsEl.textContent = '';
             if (isVisible) restoreHelpPanelState();
             else saveHelpPanelState();
         }
+        window.addEventListener('resize', () => {
+            if (helpPanelEl?.classList.contains('show')) restoreHelpPanelState();
+        });
 
         // Help panel drag — only from drag handle
         {

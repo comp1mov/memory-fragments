@@ -52,7 +52,8 @@ const scan=fs.readFileSync(process.env.LYNDEN_SCAN || 'dist/lynden-published-sca
   assert.notDeepEqual((await state()).target,beforePan.target,'Two-finger pan');
   assert.equal(await page.locator('#touch-nav').isVisible(),false);
   assert.equal(await page.locator('#corner-music').count(),0);
-  assert.equal(await page.locator('#corner-strudel').textContent(),'@');
+  assert.equal(await page.locator('#corner-strudel .music-icon-play').isVisible(),true);
+  assert.equal(await page.locator('#corner-strudel .music-icon-stop').isVisible(),false);
   assert.equal(await page.evaluate(()=>window.pointCloudMaterial.uniforms.pointSize.value),project.config.pointSize);
   const colors=await page.evaluate(()=>['scan1ColorX','scan1ColorY','scan1ColorZ','flicker2Color','flicker3Color','scan2Color'].map(k=>window.pointCloudMaterial.uniforms[k].value.toArray()));
   assert(colors.every(([r,g,b])=>r>g&&g>b),'All sweeps must use warm orange hues');

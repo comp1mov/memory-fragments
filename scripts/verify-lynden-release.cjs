@@ -11,7 +11,7 @@ const normalize=s=>s.replace(/^\uFEFF/,'').replaceAll('\r\n','\n');
 const local=fs.readFileSync('artifacts/lynden-bd.html','utf8');
 (async()=>{
  const browser=await chromium.connectOverCDP(process.argv[2]);
- const context=await browser.newContext({viewport:{width:1440,height:900}});
+ const context=await browser.newContext({viewport:{width:1440,height:900},serviceWorkers:'block'});
  const page=await context.newPage(),errors=[],views=[];
  page.on('pageerror',e=>errors.push(e.message));
  await context.addInitScript(()=>{
@@ -40,6 +40,31 @@ const local=fs.readFileSync('artifacts/lynden-bd.html','utf8');
   await page.locator('#loading-enter-btn').click();
   await page.waitForTimeout(500);
   assert.equal(await page.evaluate(()=>window.__introRunning),true);
+  assert.equal(await page.locator('#corner-strudel .music-icon-play').isVisible(),true);
+  assert.equal(await page.locator('#corner-strudel .music-icon-stop').isVisible(),false);
+  await page.getByRole('button',{name:'Help',exact:true}).click();
+  const strudelLink=page.getByRole('link',{name:'Open in Strudel',exact:true});
+  assert.equal(await strudelLink.getAttribute('href'),project.fragment.strudelTrackUrl);
+  assert.equal(await strudelLink.getAttribute('target'),'_blank');
+  assert((await strudelLink.getAttribute('rel')).includes('noopener'));
+  const popupReady=context.waitForEvent('page');
+  await strudelLink.click();
+  const popup=await popupReady;
+  await popup.waitForURL(project.fragment.strudelTrackUrl,{timeout:45000});
+  assert.equal(popup.url(),project.fragment.strudelTrackUrl);
+  assert.equal(await popup.evaluate(()=>window.opener===null),true);
+  await popup.close();
+  await page.setViewportSize({width:390,height:844});
+  await page.waitForFunction(()=>{
+   const r=document.querySelector('#help-strudel-link').getBoundingClientRect();
+   return r.x>=0&&r.right<=innerWidth;
+  });
+  const linkBox=await strudelLink.boundingBox();
+  assert(linkBox&&linkBox.x>=0&&linkBox.y>=0&&linkBox.x+linkBox.width<=390&&linkBox.y+linkBox.height<=844);
+  await page.screenshot({path:'dist/lynden-help-phone.png'});
+  await page.setViewportSize({width:1440,height:900});
+  await page.screenshot({path:'dist/lynden-help-desktop.png'});
+  await page.getByRole('button',{name:'Close',exact:true}).click();
   await page.evaluate(()=>releaseReview.finish());
   async function capture(name){
    await page.waitForTimeout(600);
@@ -56,9 +81,13 @@ const local=fs.readFileSync('artifacts/lynden-bd.html','utf8');
   }
   await page.getByRole('button',{name:'Play Cheers',exact:true}).click();
   await page.waitForFunction(()=>document.querySelector('#corner-strudel').getAttribute('aria-pressed')==='true',null,{timeout:90000});
+  assert.equal(await page.locator('#corner-strudel .music-icon-play').isVisible(),false);
+  assert.equal(await page.locator('#corner-strudel .music-icon-stop').isVisible(),true);
   await page.waitForFunction(()=>pointCloudMaterial.uniforms.audioLevel.value>0.01,null,{timeout:30000});
   assert.equal(await page.evaluate(()=>microphoneRequests),0);
   await page.getByRole('button',{name:'Stop Cheers',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('#corner-strudel').getAttribute('aria-pressed')==='false');
+  assert.equal(await page.locator('#corner-strudel .music-icon-play').isVisible(),true);
   if(live){
    await page.goto('https://memoryfragments.vercel.app/fragments/lynden-bd');
    assert.equal(await page.locator('h1').innerText(),project.fragment.title);
@@ -77,6 +106,6 @@ const local=fs.readFileSync('artifacts/lynden-bd.html','utf8');
   }
   assert.equal(errors.length,0,errors.join('\n'));
   fs.writeFileSync('dist/lynden-release-results.json',JSON.stringify({status:'passed',live,points:fragment.sourceScan.pointCountEstimate,views,errors},null,2));
-  console.log('Passed: exact project settings, initial camera, four nonblank cameras, scan, reveal, music without microphone'+(live?', live HTML, cover and unlisted portal.':'.'));
+  console.log('Passed: exact project settings, initial camera, four nonblank cameras, scan, reveal, Play/Stop icons, separate Strudel tab, mobile Help, music without microphone'+(live?', live HTML, cover and unlisted portal.':'.'));
  }finally{await context.close();await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1);});
